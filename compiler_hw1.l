@@ -71,7 +71,7 @@ struct SymbolTable {
 	char type[12];
 	char name[12];
 };
-struct SymbolTable sym[100];
+struct SymbolTable sym[1000];	/*max num of variale 1000*/
 
 int countLine;
 int commentLine;
