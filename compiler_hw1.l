@@ -7,6 +7,8 @@
 	int externalLine(char *c);
 	int countLine;
 	int commentLine;
+	int var;
+	int fail;
 
 	/* Symbol table function */
 	void create_symbol();
@@ -37,7 +39,7 @@ undefined ";"|" "
 %%
 
 {undefined} {;}
-{type}  {printf("%s\t DATATYPE : %s\n", yytext, yytext);insert_symbol(yytext,1);}
+{type}  {printf("%s\t DATATYPE : %s\n", yytext, yytext);if (!fail)insert_symbol(yytext,1);}
 {function}		{printf("%s\t FUNTION : %s \n", yytext, yytext);}
 {compare} 	{printf("%s \t COMPARE \n", yytext);}
 {assign} 	{ printf("%s \t ASSIGN \n", yytext); }
@@ -48,9 +50,18 @@ undefined ";"|" "
 "+" 	{ printf("%s \t Add \n", yytext); }
 "-"		{ printf("%s \t Sub \n", yytext); }
 "++"	{ printf("%s \t INCRECEMENT \n", yytext); }
-"var"   {;}
+"var"   {var=1;}
 \n		{countLine++;}
-{id}	{ printf("%s \t ID \n", yytext); if(!lookup_symbol(yytext))insert_symbol(yytext,0);}
+{id}	{ printf("%s \t ID \n", yytext); 
+	if(!lookup_symbol(yytext) && var)insert_symbol(yytext,0);	/*insert*/
+	else if (lookup_symbol(yytext) && var) {printf("redefined variable : %s\n",yytext);fail=1;}	/*redefined*/
+	else if (!lookup_symbol(yytext) && !var) {printf("undefined variable : %s\n",yytext);fail=1;}	/*undefined*/
+	else;	/*normal*/
+
+	var=0;
+	}
+
+
 {number} { printf("%s \t NUMBER \n", yytext); }
 {frac} { printf("%s \t FRAC \n", yytext); }
 {comment1} {printf("%s \t C++ COMMENT \n", yytext);commentLine++;}
@@ -76,6 +87,8 @@ struct SymbolTable sym[1000];	/*max num of variale 1000*/
 int countLine;
 int commentLine;
 int countIndex;
+int var;
+int fail;
 
 /* count number of '\n' in C type comment */
 int externalLine(char *c) {
@@ -133,6 +146,8 @@ int main(int argc,char *argv[])
 {
 	countLine=0;
 	commentLine=0;
+	var=0;
+	fail=0;
 
 	/* create symbol table */
 	countIndex=0;

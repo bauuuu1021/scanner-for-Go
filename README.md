@@ -1,7 +1,7 @@
 # scanner for μGo in Lex
 contributed by <`bauuuu1021`>
 ## Execution
-install lex package first. `sudo apt-get install lex`.<br>
+install lex package first. `$sudo apt-get install lex`.<br>
 `$make` the project to get exe file `myscanner`. Execute it by `$./myscanner <μGo_file>`. 
 ## Basic Features
 - [x] Print the recognized token on a separate line and discard whitespace and undefined
@@ -18,7 +18,7 @@ character sets. (50pt)
 ## Advanced features
 - [x] Discard C and C++ type comment. (10pt)
 - [x] Count the comment lines. (10pt)
-- [ ] Syntax error check. (10pt)
+- [x] Syntax error check. (10pt)
     * Undeclared variables
     * Redefined variables
  
