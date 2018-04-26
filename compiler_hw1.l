@@ -49,7 +49,11 @@ undefined ";"|" "
 "}"		{ printf("%s \t RCB \n", yytext); }
 "+" 	{ printf("%s \t Add \n", yytext); }
 "-"		{ printf("%s \t Sub \n", yytext); }
+"*"		{ printf("%s \t Mul \n", yytext); }
+"/"		{ printf("%s \t Div \n", yytext); }
+"%"		{ printf("%s \t Mod \n", yytext); }
 "++"	{ printf("%s \t INCRECEMENT \n", yytext); }
+"--"	{ printf("%s \t DECRECEMENT \n", yytext); }
 "var"   {var=1;}
 \n		{countLine++;}
 {id}	{ printf("%s \t ID \n", yytext); 
@@ -66,7 +70,7 @@ undefined ";"|" "
 {frac} { printf("%s \t FRAC \n", yytext); }
 {comment1} {printf("%s \t C++ COMMENT \n", yytext);commentLine++;}
 {comment2} {printf("%s \t C type COMMENT \n", yytext);commentLine++;countLine+=externalLine(yytext);}
-
+. {;}
 %%
 
 /*	C Code section */
@@ -125,7 +129,7 @@ int lookup_symbol(char *s) {
 	int current=0;
 
 	while (current <= countIndex) {
-		if (!strcmp(s,sym[current].name))
+		if (!strcmp(s,sym[current].name)) 
 			return 1;	/* found */
 		current++;
 	}
