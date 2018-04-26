@@ -22,12 +22,13 @@
 
 letter [a-zA-Z]
 digit [0-9]
+logic "||"|"&&"|"!"
 id {letter}+({letter}|{digit})*
 number {digit}+
 frac {number}+"."+{number}
 assign [=]
 compare [<]|[>]
-function "for"|"println"|"if"
+function "for"|"println"|"if"|"print"|"else"
 type "int"|"float32"
 /*c++ type comment*/
 comment1 "//"+({letter}|{digit}|" "|.)*		
@@ -43,6 +44,7 @@ undefined ";"|" "
 {function}		{printf("%s\t FUNTION : %s \n", yytext, yytext);}
 {compare} 	{printf("%s \t COMPARE \n", yytext);}
 {assign} 	{ printf("%s \t ASSIGN \n", yytext); }
+{logic}	{ printf("%s \t LOGIC \n", yytext); }
 "("		{ printf("%s \t LB \n", yytext); }
 ")"		{ printf("%s \t RB \n", yytext); }
 "{"		{ printf("%s \t LCB \n", yytext); }
@@ -130,7 +132,7 @@ int lookup_symbol(char *s) {
 
 	while (current <= countIndex) {
 		if (!strcmp(s,sym[current].name)) 
-			return 1;	/* found */
+			return current;	/* return index if found */
 		current++;
 	}
 	return 0; /* not found */
@@ -139,7 +141,7 @@ int lookup_symbol(char *s) {
 void dump_symbol() {
 	printf("\nIndex\tId\tType\n");
 
-	int current=0;
+	int current=1;
 	while (current<countIndex) {
 		printf("%d\t%s\t%s\n", current,sym[current].name,sym[current].type);
 		current++;
@@ -154,7 +156,7 @@ int main(int argc,char *argv[])
 	fail=0;
 
 	/* create symbol table */
-	countIndex=0;
+	countIndex=1;
 	create_symbol();
 
 	yyin = fopen(argv[1],"r");

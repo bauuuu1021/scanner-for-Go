@@ -12,8 +12,10 @@ character sets. (50pt)
         * **I implement this function by declared a global variable**
         * Line:68~74
         * Set max number of variables as 1000 
+        * Index number of the first variable is **1**
     * insert_symbol() (10pt)
     * lookup_symbol() (10pt)
+        * Return index number if found the variable; otherwise, return 0.
     * dump_symbol() (10pt)
 ## Advanced features
 - [x] Discard C and C++ type comment. (10pt)
